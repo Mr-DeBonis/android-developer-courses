@@ -6,7 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -14,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,10 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TaskCompleted(
-                        stringResource(R.string.task_completed_status),
-                        stringResource(R.string.task_completed_message)
-                    )
+                    TaskCompleted()
                 }
             }
         }
@@ -47,50 +47,47 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     TaskManagerTheme {
-        TaskCompleted(
-            stringResource(R.string.task_completed_status),
-            stringResource(R.string.task_completed_message)
-        )
+        TaskCompleted()
     }
 }
 
 
 @Composable
-fun TaskCompleted(taskStatus: String, message: String, modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.ic_task_completed)
+fun TaskCompleted() {
+    TaskCard(
+        image = painterResource(id = R.drawable.ic_task_completed),
+        status = stringResource(R.string.task_completed_status),
+        message = stringResource(R.string.task_completed_message)
+    )
+}
+
+
+@Composable
+fun TaskCard(
+    image: Painter,
+    status: String,
+    message: String,
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
         Image(
             painter = image,
             contentDescription = null
         )
-        TaskStatus(taskStatus = taskStatus)
-        TaskMessage(message = message)
+        Text(
+            text = status,
+            fontWeight = FontWeight.Bold,
+            modifier = modifier.padding(top = 24.dp, bottom = 8.dp)
+        )
+        Text(
+            text = message,
+            fontSize = 16.sp
+        )
     }
-}
-
-
-@Composable
-fun TaskStatus(taskStatus: String, modifier: Modifier = Modifier) {
-    Text(
-        text = taskStatus,
-        fontWeight = FontWeight.Bold,
-        modifier = modifier
-            .padding(
-                top = 24.dp,
-                bottom = 8.dp
-            )
-    )
-}
-
-
-@Composable
-fun TaskMessage(message: String, modifier: Modifier = Modifier) {
-    Text(
-        text = message,
-        fontSize = 16.sp,
-        modifier = modifier
-    )
 }
