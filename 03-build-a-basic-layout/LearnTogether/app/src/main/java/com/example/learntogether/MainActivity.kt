@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,11 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomePage(
-                        stringResource(R.string.home_title),
-                        stringResource(R.string.home_paragraph_1),
-                        stringResource(R.string.home_paragraph_2)
-                    )
+                    ComposableArticleApp()
                 }
             }
         }
@@ -49,16 +45,30 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LearnTogetherPreview() {
     LearnTogetherTheme {
-        HomePage(
-            stringResource(R.string.home_title),
-            stringResource(R.string.home_paragraph_1),
-            stringResource(R.string.home_paragraph_2)
-        )
+        ComposableArticleApp()
     }
 }
 
+
 @Composable
-fun HomePage(title: String, paragraph1: String, paragraph2: String) {
+fun ComposableArticleApp() {
+    ArticleCard(
+        title = stringResource(id = R.string.home_title),
+        shortDescription = stringResource(id = R.string.home_paragraph_1),
+        longDescription = stringResource(id = R.string.home_paragraph_2),
+        imagePainter = painterResource(id = R.drawable.bg_compose_background)
+    )
+}
+
+
+@Composable
+fun ArticleCard(
+    title: String,
+    shortDescription: String,
+    longDescription: String,
+    imagePainter: Painter,
+    modifier: Modifier = Modifier
+) {
     val headerImage = painterResource(id = R.drawable.bg_compose_background)
     Column(
         verticalArrangement = Arrangement.Top,
@@ -72,47 +82,22 @@ fun HomePage(title: String, paragraph1: String, paragraph2: String) {
             verticalArrangement = Arrangement.Top,
             modifier = Modifier
         ) {
-            MyTitle(
+            Text(
                 text = title,
-                modifier = Modifier
+                fontSize = 24.sp,
+                modifier = Modifier.padding(16.dp)
             )
-            MyContent(
-                text = paragraph1,
-                modifier = Modifier
+            Text(
+                text = shortDescription,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp)
             )
-            MyContent(
-                text = paragraph2,
-                modifier = Modifier
-                    .padding(
-                        top = 16.dp,
-                        bottom = 16.dp
-                    )
+            Text(
+                text = longDescription,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
-}
-
-
-@Composable
-fun MyTitle(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        fontSize = 24.sp,
-        modifier = Modifier
-            .padding(16.dp)
-    )
-}
-
-@Composable
-fun MyContent(text: String, modifier: Modifier) {
-    Text(
-        text = text,
-        textAlign = TextAlign.Justify,
-        modifier = modifier
-            .padding(
-                start = 16.dp,
-                end = 16.dp
-            )
-    )
 }
 
